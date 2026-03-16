@@ -38,7 +38,7 @@ const SignInContainer = () => {
 
             const result = await response.json();
 
-            if (result.status == 200) {
+            if (result.status === 200) {
                 console.log(`로그인 성공`, result);
                 alert(`${result.data.name}님 반갑습니다.`);
                 navigate('/');
