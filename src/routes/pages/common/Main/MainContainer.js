@@ -22,7 +22,7 @@ const MainContainer = () => {
     const [testForUseEffect, setTestForUseEffect] = useState(null);
     const [testForButtonClick, setTestForButtonClick] = useState(null);
 
-    const [users, setUsers] = useState(null);
+    const [users, setUsers] = useState([]);
 
 
 
@@ -52,6 +52,17 @@ const MainContainer = () => {
             console.log(result);
         } catch (err) {
             console.error(err);
+        }
+    };
+
+    const handleGetUsers = async () => { // 2. 함수 선언
+        try {
+            const response = await fetch('http://localhost:8080/api/users');
+            const result = await response.json();
+            setUsers(result);
+            console.log(result);
+        } catch (err) {
+            console.error("서버 연결 실패:", err);
         }
     };
 
@@ -107,7 +118,10 @@ const MainContainer = () => {
             handleTest={handleTest} // 작성한 비즈니스 로직을 Presenter에게 넘김
 
             handleGetAllUsers={handleGetAllUsers}
+
             users={users}
+
+            handleGetUsers={handleGetUsers}
             
         />
     );

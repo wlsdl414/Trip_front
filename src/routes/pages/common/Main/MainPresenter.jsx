@@ -1,5 +1,6 @@
 import { MainLayout } from '../../../../layouts';
 import './Main.css';
+import Travel from './components/travel';
 
 /**
  * Presenter
@@ -15,6 +16,10 @@ const MainPresenter = ({
     handleTest,
 
     handleGetAllUsers,
+
+    handleGetUsers, 
+    
+    users
 
 }) => {
 
@@ -41,8 +46,17 @@ const MainPresenter = ({
                 </div>
 
             </div>
-
+            <div>
+                <button onClick={handleGetUsers}>가이드 불러오기</button>
+            
+                <div>
+                    {users && users.map((user) => (
+                        <Travel key={user.id} user={user} />
+                    ))}
+                </div>
+            </div>
         </MainLayout>
+        
     );
 };
 
