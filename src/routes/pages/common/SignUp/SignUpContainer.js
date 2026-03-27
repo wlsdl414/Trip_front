@@ -1,61 +1,58 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SignUpPresenter from "./SignUpPresenter"
 
 const SignUpContainer = () => {
-    const [userId, setUserId] = useState('');
-    const [userPassword, setUserPassword] = useState('');
-    const [userName, setUserName] = useState('');
-    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState({
+        id: '',
+        pw: '',
+        name: '',
+        phone: '',
+        birth_date: '',
+        nationality: '',
+        nickname: '',
+        address: '',
+        gender: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        
+        // 기존 객체를 복사(...userInfo)하고, 변경된 필드만 덮어씁니다.
+        setUserInfo({
+            ...userInfo,
+            [name]: value
+        });
+    };
 
     const handleSignUp = async (e) => {
+        console.log(userInfo);
         e.preventDefault();
-        setError(null);
-
         try {
-            const userInfo = {
-                id: userId,
-                password: userPassword,
-                name: userName
-            };
-
             const response = await fetch('http://localhost:8080/user/signup', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userInfo),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userInfo), // 이미 객체이므로 그대로 보냄
             });
+            console.log("!!")
 
             if (response.ok) {
-                const result = await response.json();
-                console.log('회원가입 성공', result);
                 alert('회원가입 성공');
+                navigate('/signin');
             } else {
                 const error = await response.json();
-                console.log('회원가입 실패', error.message);
-                alert(`회원가입 실패: ${error.message}`);
+                alert(`회원가입 실패!: ${error.message}`);
             }
-
-            setUserId('');
-            setUserPassword('');
-            setUserName('');
-
         } catch (err) {
-            setError('중복 가입');
             console.error('회원가입 요청 에러:', err);
         }
     };
 
     return (
         <SignUpPresenter
-            userId={userId}
-            userPassword={userPassword}
-            userName={userName}
-
-            setUserId={setUserId}
-            setUserPassword={setUserPassword}
-            setUserName={setUserName}
-
+            userInfo={userInfo}
+            handleChange={handleChange}
             handleSignUp={handleSignUp}
         />
     );

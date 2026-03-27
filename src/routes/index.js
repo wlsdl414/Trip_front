@@ -5,12 +5,15 @@
  */
 
 // react-router-dom 라이브러리의 Route와 Routes 컴포넌트를 사용하여 경로 설정
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom"
 
 // pages
 import { Main, SignIn, SignUp } from './pages';
 
 const Router = () => {
+    const [user, setUser] = useState(null);
+
     return (
         <div className="app">
 
@@ -21,13 +24,13 @@ const Router = () => {
                 {/* 각 페이지의 경로와 해당 경로에서 렌더링할 컴포넌트(페이지)를 지정 */}
                 <Route
                     path='/'
-                    element={<Main />}
+                    element={<Main user={user} setUser={setUser} />}
                 />
 
                 {/* 로그인 화면 */}
                 <Route
                     path='/signin'
-                    element={<SignIn />}
+                    element={<SignIn setUser={setUser} />}
                 />
 
                 {/* 회원가입 화면 */}

@@ -3,9 +3,9 @@ import './SignIn.css';
 
 const SignInPresenter = ({
     id,
-    password,
+    pw,
     setId,
-    setPassword,
+    setPw,
     handleSignIn,
 }) => {
     return (
@@ -20,8 +20,8 @@ const SignInPresenter = ({
                 <input
                     type='text'
                     placeholder='text'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={pw}
+                    onChange={(e) => setPw(e.target.value)}
                 />
                 <button type='submit'>
                     로그인

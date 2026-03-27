@@ -2,13 +2,13 @@ import { useState } from "react";
 import SignInPresenter from "./SignInPresenter"
 import { useNavigate } from "react-router-dom";
 
-const SignInContainer = () => {
+const SignInContainer = ({ setUser }) => {
     const navigate = useNavigate();
-
     const [id, setId] = useState('');
-    const [password, setPassword] = useState('');
+    const [pw, setPw] = useState('');
 
     const handleSignIn = async (e) => {
+        console.log(id, pw);
         // <form></form> 태그로 작성 시, 새롭게 렌더링 되는 것을 막기 위해 추가함
         e.preventDefault();
 
@@ -17,7 +17,7 @@ const SignInContainer = () => {
             return;
         }
 
-        if (!password.length) {
+        if (!pw.length) {
             alert('비밀번호를 입력해주세요');
             return;
         }
@@ -25,7 +25,7 @@ const SignInContainer = () => {
         try {
             const userInfo = {
                 id: id,
-                password: password,
+                pw: pw,
             };
 
             const response = await fetch('http://localhost:8080/user/signin', {
@@ -34,12 +34,18 @@ const SignInContainer = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(userInfo),
+                credentials: 'include' // 쿠키 전송 허용
             });
 
             const result = await response.json();
 
             if (result.status === 200) {
                 console.log(`로그인 성공`, result);
+                setUser({
+                    id: result.data.id,
+                    name: result.data.name
+                });
+
                 alert(`${result.data.name}님 반갑습니다.`);
                 navigate('/');
                 return;
@@ -57,9 +63,9 @@ const SignInContainer = () => {
     return (
         <SignInPresenter
             id={id}
-            password={password}
+            pw={pw}
             setId={setId}
-            setPassword={setPassword}
+            setPw={setPw}
             handleSignIn={handleSignIn}
         />
     );

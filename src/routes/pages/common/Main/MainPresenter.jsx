@@ -17,9 +17,13 @@ const MainPresenter = ({
 
     handleGetAllUsers,
 
-    handleGetUsers, 
-    
-    users
+    handleGetUsers,
+
+    user,
+
+    users,
+
+    handleLogout
 
 }) => {
 
@@ -27,28 +31,43 @@ const MainPresenter = ({
         <MainLayout>
             <div className='main-container'>
                 <div className='main-test-container'>
-                    <button
-                        onClick={handleTest}
-                    >테스트 버튼</button>
+                    {user ? (
+                        <div>
+                            <h1>{user.name}님 환영합니다!</h1>
+                            <button
+                                onClick={handleTest}
+                            >테스트 버튼</button>
 
+                            <button
+                                onClick={handleGetAllUsers}
+                            >고객 조회</button>
+
+                            <button
+                                onClick={handleLogout}
+                            >로그아웃</button>
+                        </div>
+                    ) : (
+                        <div className='main-btn-wrap'>
+                            <button
+                                onClick={() => navigate('/signup')}
+                            >회원가입</button>
+                            <button
+                                onClick={() => navigate('/signin')}
+                            >로그인</button>
+                        </div>
+                    )}
                     <button
-                        onClick={handleGetAllUsers}
-                    >고객 조회</button>
+                        onClick={handleGetUsers}
+                    >회원정보</button>
+
                 </div>
 
-                <div className='main-btn-wrap'>
-                    <button
-                        onClick={() => navigate('/signup')}
-                    >회원가입</button>
-                    <button
-                        onClick={() => navigate('/signin')}
-                    >로그인</button>
-                </div>
+
 
             </div>
             <div>
                 <button onClick={handleGetUsers}>가이드 불러오기</button>
-            
+
                 <div>
                     {users && users.map((user) => (
                         <Travel key={user.id} user={user} />
@@ -56,7 +75,7 @@ const MainPresenter = ({
                 </div>
             </div>
         </MainLayout>
-        
+
     );
 };
 
